@@ -18,8 +18,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y rpm rpm-build
-          sudo apt-get install -y dpkg-dev
+          sudo apt-get install -y rpm dpkg-dev
 
       # збірка deb пакету
       - name: Build deb package

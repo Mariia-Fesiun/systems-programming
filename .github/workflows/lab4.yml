@@ -1,1 +1,63 @@
+name: Lab 4. Build rpm and deb
 
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y rpm rpm-build
+          sudo apt-get install -y dpkg-dev
+
+      # збірка deb пакету
+      - name: Build deb package
+        run: |
+          echo "Building deb-----"
+          # гарантуємо права на виконання скрипту, на всякий випадок, якщо гіт не збереже +x 
+          chmod +x lab3/source_deb/usr/local/bin/script_lab3 || true
+          
+          # збирається пакет
+          dpkg-deb --build lab3/source_deb lab4_deb_package.deb
+          echo "deb build complete."
+          
+      # збірка rpm пакету
+      - name: Build rpm package
+        run: |
+          echo "Building rpm-----"
+          mkdir -p rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
+          
+          # видаляємо стару папку, якщо така була і створюємо нову з назвою версії 
+          rm -rf lab2-1.0
+          mkdir -p lab2-1.0
+          
+          # копіюємо скрипт у папку 
+          cp lab2/lab1.sh lab2-1.0/ || (echo "ERROR: lab2/lab1.sh not found" && false)
+          
+          # створюємо архів, бо Source0 повинен бути архівом
+          tar -czvf lab2-1.0.tar.gz lab2-1.0
+          mv lab2-1.0.tar.gz rpmbuild/SOURCES/
+          
+          # копіюємо spec у папку та запускаємо збірку
+          cp lab2/lab2.spec rpmbuild/SPECS/
+          rpmbuild -bb --define "_topdir $(pwd)/rpmbuild" rpmbuild/SPECS/lab2.spec
+          
+          echo "rpm build complete."
+
+      # збереження результатів
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: packages_lab4
+          path: |
+            lab4_deb_package.deb
+            rpmbuild/RPMS/**/*.rpm

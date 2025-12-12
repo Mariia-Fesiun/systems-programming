@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "Search for files according to the task condition and save them in a variable."
+dir_r=$(find /etc -type f)
+echo "Count the number of lines in the variable, i.e. the number of files found."
+count=$(echo "$dir_r" | wc -l)
+echo "Number of files: $count"

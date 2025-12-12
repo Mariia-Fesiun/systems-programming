@@ -1,0 +1,10 @@
+Package: lab3
+Version: 1.0
+Section: utils
+Priority: optional
+Architecture: all
+Maintainer: Maria Fesiun <mariafesyun@gmail.com>
+Depends: bash, findutils, coreutils 
+Description: This is the package for lab #3.
+ It installs a script that counts files 
+ excluding directories and links in the /etc directory.

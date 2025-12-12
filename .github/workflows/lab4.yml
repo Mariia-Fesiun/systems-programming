@@ -3,6 +3,8 @@ name: Lab 4. Build rpm and deb
 on:
   push:
     branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:

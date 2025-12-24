@@ -1,5 +1,5 @@
 pipeline {
-      agent {
+    agent {
         label 'docker' 
     }
 
@@ -25,16 +25,16 @@ pipeline {
         stage('Execute script') {
             steps {
                 echo 'Running script from lab 3'
-                sh 'chmod +x lab3/source_deb/usr/local/bin/script_lab3'
-                sh './lab3/source_deb/usr/local/bin/script_lab3'
+                sh 'sudo chmod +x lab3/source_deb/usr/local/bin/script_lab3'
+                sh 'sudo ./lab3/source_deb/usr/local/bin/script_lab3'
             }
         }
 
         stage('Install deb package') {
             steps {
                 echo 'Installing deb package'
-                sh 'apt-get update'
-                sh 'dpkg -i lab3/lab3.deb || apt-get install -f -y'
+                sh 'sudo apt-get update'
+                sh 'sudo dpkg -i lab3/lab3.deb || sudo apt-get install -f -y'
             }
         }
 

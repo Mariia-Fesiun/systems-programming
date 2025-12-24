@@ -15,6 +15,7 @@ services:
   jenkins-builder:
     build: .
     container_name: jenkins-builder
+    user: root
     ports:
       - "2222:22"
     networks:
